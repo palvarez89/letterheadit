@@ -9,6 +9,8 @@ cwd = pathlib.Path().absolute()
 output_dir = os.path.join(cwd, "output")
 pdftoolkit = "pdftk"
 
+letterhead = os.path.join(os.path.dirname(__file__), "letterhead.pdf")
+
 
 def check_tools():
     if which(pdftoolkit) is None:
@@ -16,6 +18,11 @@ def check_tools():
         install_command = "`apt-get install {pkg}`".format(pkg=pdftoolkit)
         print(
             "To install it, you probably need to run {cmd}".format(cmd=install_command)
+        )
+        exit(1)
+    if not os.path.isfile(letterhead):
+        print(
+            "ERROR: Letterhead not found at {letterhead}".format(letterhead=letterhead)
         )
         exit(1)
 
