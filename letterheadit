@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import pathlib
 from shutil import which
 
@@ -18,4 +19,18 @@ def check_tools():
         exit(1)
 
 
+def get_list_pdfs(folder):
+    files = [
+        f
+        for f in os.listdir(folder)
+        if f.lower().endswith(".pdf") and os.path.isfile(os.path.join(folder, f))
+    ]
+    return files
+
+
 check_tools()
+list_pdfs = get_list_pdfs(cwd)
+
+if not list_pdfs:
+    print("No PDF files found in the current directory")
+    exit(0)
