@@ -6,7 +6,7 @@ import pathlib
 from shutil import which
 import subprocess
 
-cwd = pathlib.Path().absolute()
+cwd = str(pathlib.Path().absolute())
 output_dir = os.path.join(cwd, "output")
 pdftoolkit = "pdftk"
 
