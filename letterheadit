@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+import pathlib
+from shutil import which
+
+cwd = pathlib.Path().absolute()
+
+pdftoolkit = "pdftk"
+
+
+def check_tools():
+    if which(pdftoolkit) is None:
+        print("ERROR: The tool {tool} isn't available".format(tool=pdftoolkit))
+        install_command = "`apt-get install {pkg}`".format(pkg=pdftoolkit)
+        print(
+            "To install it, you probably need to run {cmd}".format(cmd=install_command)
+        )
+        exit(1)
+
+
+check_tools()
