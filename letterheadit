@@ -4,6 +4,7 @@ import errno
 import os
 import pathlib
 from shutil import which
+import subprocess
 
 cwd = pathlib.Path().absolute()
 output_dir = os.path.join(cwd, "output")
@@ -44,6 +45,22 @@ def create_dir(folder):
             raise
 
 
+def apply_letterhead(pdf_file, dst_folder):
+    filename = os.path.basename(pdf_file)
+    name, ext = os.path.splitext(filename)
+    new_name = "{name}-letterhead{ext}".format(name=name, ext=ext)
+    dst_file = os.path.join(dst_folder, new_name)
+
+    if os.path.isfile(dst_file):
+        return
+
+    print("Processsing file {filename}".format(filename=filename))
+    pdftk_cmd = [pdftoolkit, pdf_file, "background", letterhead, "output", dst_file]
+    subprocess.check_call(
+        pdftk_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+    )
+
+
 check_tools()
 list_pdfs = get_list_pdfs(cwd)
 
@@ -52,3 +69,5 @@ if not list_pdfs:
     exit(0)
 
 create_dir(output_dir)
+for pdf_file in list_pdfs:
+    apply_letterhead(os.path.join(cwd, pdf_file), output_dir)
